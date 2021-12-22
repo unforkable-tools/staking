@@ -1,4 +1,6 @@
 {
+    "name": "unforkable-staking",
+    "version": "0.0.1",
     "dependencies": {
       "@nomiclabs/hardhat-ethers": "^2.0.1",
       "@nomiclabs/hardhat-etherscan": "^2.1.4",
