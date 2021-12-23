@@ -14,7 +14,7 @@ contract Distribute is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
-     /**
+    /**
      @dev This value is very important because if the number of bonds is too great
      compared to the distributed value, then the bond increase will be zero
      therefore this value depends on the number of decimals
@@ -62,10 +62,10 @@ contract Distribute is Ownable, ReentrancyGuard {
         if(_stakes[account] == 0) {
             investor_count++;
         }
-
+        uint256 accumulated_reward = getReward(account);
         _stakes[account] = _stakes[account].add(amount);
 
-        uint256 new_bond_value = getReward(account) * PRECISION / _stakes[account];
+        uint256 new_bond_value = accumulated_reward * PRECISION / _stakes[account];
         _bond_value_addr[account] = bond_value - new_bond_value;
     }
 
@@ -100,7 +100,7 @@ contract Distribute is Ownable, ReentrancyGuard {
         @param account From whom
         @param amount Amount to remove from the stake
     */
-    function withdrawFrom(address payable account, uint256 amount) external onlyOwner nonReentrant {
+    function withdrawFrom(address payable account, uint256 amount) external onlyOwner {
         unstakeFrom(account, amount);
         stakeFor(account, amount);
     }
