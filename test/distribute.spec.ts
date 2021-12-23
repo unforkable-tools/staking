@@ -97,7 +97,6 @@ describe('Distribute Contract', () => {
       it('for the first call with user A', async () => {
 
         const { totalStake, investorCount, userStake, userReward } = await getInfo(distribute, userA);
-
         expect(totalStake).to.be.equal(100*10**9);
         expect(investorCount).to.be.equal(1);
         expect(userStake).to.be.equal(100*10**9);
@@ -179,7 +178,7 @@ describe('Distribute Contract', () => {
     beforeEach(async () => {
 
       await Promise.all([
-        rewardToken.rebase(BigNumber.from(1_000)), // mint 100 token to `owner` address
+        rewardToken.mint(BigNumber.from(1_000), owner), // mint 100 token to `owner` address
         rewardToken.approve(distribute.address, BigNumber.from("1000000000000000000")), // allow Distribute contract to spend `owner`'s token
       ]);
     });
@@ -266,7 +265,7 @@ describe('Distribute Contract', () => {
     beforeEach(async () => {
 
       await Promise.all([
-        rewardToken.rebase(BigNumber.from(1_000)), // mint 1000 token to `owner` address
+        rewardToken.mint(BigNumber.from(1_000), owner), // mint 1000 token to `owner` address
         rewardToken.approve(distribute.address, BigNumber.from(1_000*10**9)), // allow Distribute contract to spend `owner`'s token
         distribute.stakeFor(userA, BigNumber.from(100*10**9)),
         distribute.distribute(BigNumber.from(200*10**9), owner),
