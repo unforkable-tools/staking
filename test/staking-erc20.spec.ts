@@ -261,6 +261,18 @@ describe('StackingERC20 Contract', () => {
 
     });
 
+    it('Should be able to forward wrongfully sent reward tokens', async () => {
+
+      await staking.stakeFor(userA.address, BigNumber.from(100), formatBytes32String('0'));
+
+      await rewardToken.transfer(staking.address, BigNumber.from(200));
+      const tx = await staking.forward();
+
+      expect(tx).to.have.emit(staking, 'ProfitToken').withArgs(
+        BigNumber.from(200),
+      );
+    });
+
 
     it('Should withdraw reward', async () => {
       

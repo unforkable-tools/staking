@@ -26,14 +26,34 @@ contract StakingERC20 is IERC900  {
         staking_contract_token = new Distribute(decimals, reward_token);
     }
 
+    /**
+        @dev Sends ETH to the eth reward pool of the staking contract
+    */
     function distribute_eth() payable external {
         staking_contract_eth.distribute{value : msg.value}(0, msg.sender);
         emit ProfitEth(msg.value);
     }
 
+    /**
+        @dev Takes token from sender and puts it in the reward pool
+        @param amount Amount of token to add to rewards
+    */
     function distribute(uint256 amount) external {
         staking_contract_token.distribute(amount, msg.sender);
         emit ProfitToken(amount);
+    }
+
+    /**
+        @dev Sends any reward token mistakingly sent to the main contract to the reward pool
+    */
+    function forward() external {
+        IERC20 rewardToken = IERC20(staking_contract_token.reward_token());
+        uint256 balance = rewardToken.balanceOf(address(this));
+        if(balance > 0) {
+            rewardToken.approve(address(staking_contract_token), balance);
+            staking_contract_token.distribute(balance, address(this));
+            emit ProfitToken(balance);
+        }
     }
     
     /**
