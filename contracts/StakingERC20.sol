@@ -102,9 +102,9 @@ contract StakingERC20 is IERC900  {
     /**
         @dev returns the total rewards stored for token and eth
     */
-    function totalReward() external view returns (uint256 token, uint256 eth) {
-        token = staking_contract_token.getTotalReward();
-        eth = staking_contract_eth.getTotalReward();
+    function totalReward() external view returns (uint256 tokenReward, uint256 ethReward) {
+        tokenReward = staking_contract_token.getTotalReward();
+        ethReward = staking_contract_eth.getTotalReward();
     }
 
     /**
